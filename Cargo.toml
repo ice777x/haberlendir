@@ -1,0 +1,17 @@
+[package]
+name = "conc"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = ["."]
+
+[dependencies]
+tokio = { version = "1.37.0", features = ["full"] }
+mongodb = "2.8.2"
+dotenvy = "0.15.7"
+serde = { version = "1.0.198", features = ["derive"] }
+futures = "0.3.30"
+regex = "1.10.4"
+feed-rs = "1.5.2"
+reqwest = "0.12.4"

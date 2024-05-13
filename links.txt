@@ -1,0 +1,6 @@
+http://www.star.com.tr/rss/rss.asp
+https://www.dunya.com/rss?dunya
+https://t24.com.tr/rss
+https://t24.com.tr/rss/haber/dunya-basininda-bugun
+https://t24.com.tr/rss/haber/gundem
+http://sondakika.haber7.com/sondakika.rss
