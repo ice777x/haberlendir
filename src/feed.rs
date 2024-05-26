@@ -1,3 +1,4 @@
+use html_escape::decode_html_entities;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 
@@ -10,19 +11,19 @@ impl UI for Feed {
         println!(
             "{}\n\n{}\n@{}\n",
             self.title.to_uppercase(),
-            self.description().unwrap_or_default(),
+            self.description().as_ref().unwrap(),
             self.author
         )
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Feed {
+    pub id: String,
     pub title: String,
     pub link: String,
     pub description: Option<String>,
     pub author: String,
-    pub guid: String,
     pub images: Option<String>,
     pub published: Option<String>,
     pub content: Option<String>,
@@ -43,70 +44,38 @@ impl Feed {
     // }
 
     #[allow(dead_code)]
-    fn image_from_source(&self) -> String {
+    fn image_from_source(&self) -> Option<String> {
         let re = Regex::new(r#"src="(?<link>.+)""#).unwrap();
         let desc = self.description();
         match desc {
-            Some(desc) => match re.captures(&desc).ok_or(String::new()) {
-                Ok(caps) => caps.name("link").unwrap().as_str().to_string(),
-                Err(e) => e,
-            },
+            Some(desc) => re
+                .captures(&desc)
+                .map(|caps| caps.name("link").unwrap().as_str().to_string()),
             None => {
                 let cont = self.content();
                 match cont {
-                    Some(text) => match re.captures(&text).ok_or(String::new()) {
-                        Ok(caps) => caps
-                            .name("link")
-                            .ok_or(String::new())
-                            .unwrap()
-                            .as_str()
-                            .to_string(),
-                        Err(e) => e,
-                    },
-                    None => String::new(),
+                    Some(text) => re
+                        .captures(&text)
+                        .map(|caps| caps.name("link").unwrap().as_str().to_string()),
+                    None => None,
                 }
             }
         }
     }
 
     #[allow(clippy::manual_map)]
-    pub fn description(&self) -> Option<String> {
-        let re = Regex::new(r#"<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>"#).unwrap();
-        match &self.description {
-            Some(desc) => Some(
-                re.replace_all(desc, "")
-                    .to_string()
-                    .replace("&#039;", "'")
-                    .replace("&#8216;", "'")
-                    .replace("&#8217;", "'")
-                    .replace("&#46;", ".")
-                    .replace("&amp;", "&")
-                    .replace("&quot;", "\"")
-                    .replace("\n\n", "\n")
-                    .replace("(adsbygoogle = window.adsbygoogle || []).push({});", "")
-                    .replace("&#8220;", "\""),
-            ),
-            None => None,
-        }
+    pub fn description(&self) -> &Option<String> {
+        &self.description
     }
 
     #[allow(clippy::manual_map)]
     pub fn content(&self) -> Option<String> {
         let re = Regex::new(r#"<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>"#).unwrap();
-        match &self.content.clone() {
-            Some(cont) => Some(
-                re.replace_all(cont, "")
-                    .to_string()
-                    .replace("&#039;", "'")
-                    .replace("&#8216;", "'")
-                    .replace("&#8217;", "'")
-                    .replace("&#46;", ".")
-                    .replace("&amp;", "&")
-                    .replace("&quot;", "\"")
-                    .replace("&#8220;", "\"")
-                    .replace("\n\n", "\n")
-                    .replace("(adsbygoogle = window.adsbygoogle || []).push({});", ""),
-            ),
+        match &self.content {
+            Some(cont) => {
+                let str_without_tags = re.replace_all(cont, "");
+                Some(decode_html_entities(&str_without_tags).to_string())
+            }
             None => None,
         }
     }
