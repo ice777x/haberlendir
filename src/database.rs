@@ -1,5 +1,5 @@
-use crate::feed::Feed;
 use futures::TryStreamExt;
+use haberlendir_parser::Feed;
 use mongodb::{bson::doc, Client, Collection};
 
 #[derive(Clone)]

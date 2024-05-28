@@ -1,0 +1,12 @@
+[package]
+name = "haberlendir_parser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+feed-rs = "1.5.2"
+html-escape = "0.2.13"
+regex = "1.10.4"
+reqwest = "0.12.4"
+serde = { version = "1.0.203", features = ["derive"] }
+tokio = "1.37.0"

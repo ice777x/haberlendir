@@ -1,4 +1,5 @@
-use crate::feed::Feed;
+pub mod feed;
+pub use crate::feed::Feed;
 use feed_rs::parser::parse;
 use html_escape::decode_html_entities;
 use regex::Regex;
@@ -27,14 +28,11 @@ impl Parser {
 
     /// Returns the get all rss of this [`Parser`].
     pub async fn get_all_rss(&self) -> Vec<Feed> {
-        let mut items = Vec::new();
         let mut rss = Vec::new();
         for i in self.urls.iter() {
-            items.push(self.get_rss(i));
-        }
-        let pool = futures::future::join_all(items).await;
-        for i in pool.into_iter().flatten() {
-            rss.extend(i);
+            if let Ok(news) = self.get_rss(i).await {
+                rss.extend(news);
+            }
         }
         rss
     }

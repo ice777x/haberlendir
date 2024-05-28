@@ -6,8 +6,9 @@ use axum::{
     routing::get,
     Router,
 };
-use conc::{database::DB, feed::Feed, parser::Parser};
+use conc::database::DB;
 use dotenvy::dotenv;
+use haberlendir_parser::{Feed, Parser};
 use mongodb::Client;
 
 #[tokio::main]
