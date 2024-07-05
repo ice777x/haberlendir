@@ -1,0 +1,10 @@
+version: "3.1"
+
+services:
+  haberlendir:
+    container_name: "haberlendir_scraper"
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 3147:3000
+      - 3000:3000

@@ -37,23 +37,6 @@ impl Parser {
         rss
     }
 
-    #[allow(clippy::manual_map)]
-    fn description(&self, content: String) -> String {
-        let re = Regex::new(r"<.*?>").unwrap();
-        let text_without_tags = re.replace_all(&content, "");
-        decode_html_entities(&text_without_tags).to_string()
-    }
-
-    #[allow(clippy::manual_map)]
-    pub fn content(&self, content: String) -> String {
-        let re = Regex::new(r#"<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>"#).unwrap();
-        let str_without_tags = re
-            .replace_all(&content, "")
-            .replace("(adsbygoogle = window.adsbygoogle || []).push({});", "")
-            .replace("\n\n", "\n");
-        decode_html_entities(&str_without_tags).to_string()
-    }
-
     pub async fn get_rss(&self, url: &str) -> Result<Vec<Feed>, Box<dyn std::error::Error>> {
         let res = reqwest::get(url).await?.bytes().await?;
         let rss = parse(&res[..])?;
@@ -94,5 +77,24 @@ impl Parser {
             items.push(feed);
         }
         Ok(items)
+    }
+
+    #[allow(clippy::manual_map)]
+    fn description(&self, content: String) -> String {
+        let re = Regex::new(r"<.*?>").unwrap();
+        let text_without_tags = re.replace_all(&content, "").trim().to_owned();
+        decode_html_entities(&text_without_tags).to_string()
+    }
+
+    #[allow(clippy::manual_map)]
+    pub fn content(&self, content: String) -> String {
+        let re = Regex::new(r#"<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>"#).unwrap();
+        let str_without_tags = re
+            .replace_all(&content, "")
+            .replace("(adsbygoogle = window.adsbygoogle || []).push({});", "")
+            .replace("\n\n", "\n")
+            .trim()
+            .to_owned();
+        decode_html_entities(&str_without_tags).to_string()
     }
 }

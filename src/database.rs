@@ -13,6 +13,7 @@ impl DB {
             col: client.database(db_name).collection(col_name),
         }
     }
+
     /// Find item in database with RegEx
     /// # Examples
     /// ```
@@ -119,24 +120,5 @@ impl DB {
             }
         }
         clean_docs
-    }
-}
-
-#[derive(Default)]
-pub struct Scheduler {
-    pub state: bool,
-    pub t_per_minute: u64,
-}
-
-impl Scheduler {
-    pub fn new(t_per_minute: u64) -> Self {
-        Self {
-            t_per_minute,
-            state: true,
-        }
-    }
-
-    pub fn update(&mut self, update_value: bool) {
-        self.state = update_value;
     }
 }
