@@ -1,7 +1,9 @@
 pub mod feed;
 pub use crate::feed::Feed;
+use chrono::{offset, DateTime, FixedOffset, Local, Utc};
 use feed_rs::parser::parse;
 use html_escape::decode_html_entities;
+use log::warn;
 use regex::Regex;
 use tokio::fs;
 
@@ -41,7 +43,17 @@ impl Parser {
         let res = reqwest::get(url).await?.bytes().await?;
         let rss = parse(&res[..])?;
         let mut items = Vec::new();
-        let source = &rss.title.ok_or(String::new()).unwrap().content;
+        let source = match &rss.title.ok_or("Resource Title Not Found") {
+            Ok(src) => src.content.to_owned(),
+            Err(e) => {
+                warn!("{:?} {}", url, e);
+                println!("D");
+                "".to_owned()
+            }
+        };
+        if source == String::new() {
+            return Ok(Vec::new());
+        }
         for entry in rss.entries {
             if entry.title.is_none() {
                 continue;
@@ -49,7 +61,7 @@ impl Parser {
             let feed = Feed {
                 id: entry.id,
                 title: entry.title.ok_or(String::new()).unwrap().content,
-                author: source.to_string(),
+                author: source.to_owned(),
                 link: match entry.links.first() {
                     Some(link) => link.href.clone(),
                     None => String::new(),
@@ -62,7 +74,7 @@ impl Parser {
                 content: entry
                     .content
                     .map(|content| self.content(content.body.unwrap_or_default())),
-                published: entry.published.map(|publ| publ.to_string()),
+                published: entry.published,
                 images: match entry.media.first() {
                     Some(med) => {
                         let img = match med.content.first() {
@@ -73,6 +85,7 @@ impl Parser {
                     }
                     None => None,
                 },
+                created_at: Utc::now(),
             };
             items.push(feed);
         }

@@ -4,8 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+chrono = { version = "0.4.38", features = ["serde"] }
 feed-rs = "1.5.2"
 html-escape = "0.2.13"
+log = "0.4.22"
 regex = "1.10.4"
 reqwest = "0.12.4"
 serde = { version = "1.0.203", features = ["derive"] }

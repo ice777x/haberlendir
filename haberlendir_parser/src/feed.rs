@@ -1,3 +1,4 @@
+use chrono::{DateTime, NaiveDateTime, Utc};
 use html_escape::decode_html_entities;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
@@ -25,7 +26,8 @@ pub struct Feed {
     pub description: Option<String>,
     pub author: String,
     pub images: Option<String>,
-    pub published: Option<String>,
+    pub published: Option<DateTime<Utc>>,
+    pub created_at: DateTime<Utc>,
     pub content: Option<String>,
 }
 
@@ -49,7 +51,7 @@ impl Feed {
         let desc = self.description();
         match desc {
             Some(desc) => re
-                .captures(&desc)
+                .captures(desc)
                 .map(|caps| caps.name("link").unwrap().as_str().to_string()),
             None => {
                 let cont = self.content();
