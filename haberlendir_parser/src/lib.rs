@@ -1,11 +1,35 @@
 pub mod feed;
 pub use crate::feed::Feed;
-use chrono::{offset, DateTime, FixedOffset, Local, Utc};
+
+use chrono::Utc;
 use feed_rs::parser::parse;
 use html_escape::decode_html_entities;
+use lazy_static::lazy_static;
 use log::warn;
 use regex::Regex;
+use serde::{Deserialize, Serialize};
 use tokio::fs;
+
+lazy_static! {
+    static ref RE_TAG: Regex = Regex::new(r"<[^>]+>").unwrap();
+    static ref RE_WHITESPACE: Regex = Regex::new(r"\s+").unwrap();
+}
+
+fn clean_html(input: &str) -> String {
+    let no_tags = RE_TAG.replace_all(input, "");
+
+    // Fazladan boşlukları sil
+    let cleaned = RE_WHITESPACE.replace_all(&no_tags, " ").to_string();
+
+    cleaned.trim().to_string()
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Author {
+    name: String,
+    url: Vec<String>,
+    image: Option<String>,
+}
 
 pub struct Parser {
     pub urls: Vec<String>,
@@ -43,6 +67,7 @@ impl Parser {
         let res = reqwest::get(url).await?.bytes().await?;
         let rss = parse(&res[..])?;
         let mut items = Vec::new();
+
         let source = match &rss.title.ok_or("Resource Title Not Found") {
             Ok(src) => src.content.to_owned(),
             Err(e) => {
@@ -51,13 +76,16 @@ impl Parser {
                 "".to_owned()
             }
         };
+
         if source == String::new() {
             return Ok(Vec::new());
         }
+
         for entry in rss.entries {
             if entry.title.is_none() {
                 continue;
             }
+
             let feed = Feed {
                 id: entry.id,
                 title: entry.title.ok_or(String::new()).unwrap().content,
@@ -67,13 +95,13 @@ impl Parser {
                     None => String::new(),
                 },
                 description: if let Some(t) = entry.summary {
-                    Some(self.description(t.content))
+                    Some(self.description(&t.content))
                 } else {
                     None
                 },
                 content: entry
                     .content
-                    .map(|content| self.content(content.body.unwrap_or_default())),
+                    .map(|content| self.content(&content.body.unwrap_or_default())),
                 published: entry.published,
                 images: match entry.media.first() {
                     Some(med) => {
@@ -93,21 +121,18 @@ impl Parser {
     }
 
     #[allow(clippy::manual_map)]
-    fn description(&self, content: String) -> String {
-        let re = Regex::new(r"<.*?>").unwrap();
-        let text_without_tags = re.replace_all(&content, "").trim().to_owned();
-        decode_html_entities(&text_without_tags).to_string()
+    fn description(&self, content: &str) -> String {
+        let cleaned = clean_html(content);
+        decode_html_entities(&cleaned).to_string()
     }
 
     #[allow(clippy::manual_map)]
-    pub fn content(&self, content: String) -> String {
-        let re = Regex::new(r#"<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>"#).unwrap();
-        let str_without_tags = re
-            .replace_all(&content, "")
+    pub fn content(&self, content: &str) -> String {
+        let cleaned = clean_html(content)
             .replace("(adsbygoogle = window.adsbygoogle || []).push({});", "")
             .replace("\n\n", "\n")
             .trim()
             .to_owned();
-        decode_html_entities(&str_without_tags).to_string()
+        decode_html_entities(&cleaned).to_string()
     }
 }

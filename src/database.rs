@@ -49,7 +49,7 @@ impl DB {
             .limit(limit)
             .skip(skip)
             .build();
-        let result = self.col.find(filter, options).await;
+        let result = self.col.find(filter).with_options(options).await;
         match result {
             Ok(cur) => match cur.try_collect().await {
                 Ok(dcs) => dcs,
@@ -66,7 +66,7 @@ impl DB {
     }
 
     pub async fn insert_one(&self, docx: Feed) {
-        let res = self.col.insert_one(docx, None).await;
+        let res = self.col.insert_one(docx).await;
         match res {
             Ok(ins) => info!("{} Document Successfully inserted", ins.inserted_id),
             Err(_) => error!("Duplicate key error"),
@@ -78,7 +78,7 @@ impl DB {
         if cleaned.is_empty() {
             return;
         }
-        let res = self.col.insert_many(cleaned, None).await;
+        let res = self.col.insert_many(cleaned).await;
         match res {
             Ok(imr) => info!("Docs({}) Successfully inserted", imr.inserted_ids.len()),
             Err(e) => {
@@ -88,21 +88,41 @@ impl DB {
     }
 
     pub async fn delete_one(&self, doc: Feed) -> bool {
-        let result = self.col.delete_one(doc! {"id": &doc.id}, None).await;
+        let result = self.col.delete_one(doc! {"id": &doc.id}).await;
         result.map(|_| true).unwrap()
     }
 
-    pub async fn delete_many(&self, docs: Vec<Feed>) {
-        let ids: Vec<&str> = docs.iter().map(|doc| doc.id.as_str()).collect();
-        let filter = doc! {"id": {"$in": &ids}};
-        match self.col.delete_many(filter, None).await {
+    pub async fn delete_many(&self, docs: &[String], all: bool) {
+        // let ids: Vec<&str> = docs.iter().map(|doc| doc.id.as_str()).collect();
+        let filter = if all {
+            doc! {}
+        } else {
+            doc! {"id": {"$in": docs}}
+        };
+
+        match self.col.delete_many(filter).await {
             Ok(_) => (),
             Err(e) => info!("Delete Error: {:?}", e.kind),
         };
     }
 
+    pub async fn get_resourcers(&self) -> Option<Vec<String>> {
+        let result = self.col.distinct("author", doc! {}).await;
+        match result {
+            Ok(res) => Some(
+                res.iter()
+                    .map(|res| res.to_string().trim_matches('"').to_string())
+                    .collect(),
+            ),
+            Err(e) => {
+                error!("Error: {}", e.kind);
+                None
+            }
+        }
+    }
+
     pub async fn check(&self, doc: &Feed) -> bool {
-        let result = self.col.find_one(doc! {"id": doc.id.as_str()}, None).await;
+        let result = self.col.find_one(doc! {"id": doc.id.as_str()}).await;
         match result {
             Ok(docx) => docx.is_some(),
             Err(e) => {
@@ -117,7 +137,7 @@ impl DB {
         let filter = doc! {"id": {"$in": &ids}};
         let existing_docs = self
             .col
-            .find(filter, None)
+            .find(filter)
             .await
             .unwrap()
             .collect::<Vec<_>>()

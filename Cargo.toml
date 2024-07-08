@@ -10,15 +10,17 @@ members = [".", "haberlendir_parser"]
 [dependencies]
 haberlendir_parser = { path = "./haberlendir_parser" }
 tokio = { version = "1.37.0", features = ["full"] }
-mongodb = "2.8.2"
+mongodb = "3.0.0"
 dotenvy = "0.15.7"
 serde = { version = "1.0.198", features = ["derive"] }
 futures = "0.3.30"
 regex = "1.10.4"
-feed-rs = "1.5.2"
+feed-rs = "2.0.0"
 reqwest = "0.12.4"
 clokwerk = "0.4.0"
 axum = "0.7.5"
-serde_json = "1.0.117"
+serde_json = "1.0.120"
 log = "0.4.22"
 pretty_env_logger = "0.5.0"
+tower-http = { version = "0.5.2", features = ["cors", "fs", "trace"] }
+tower = "0.4.13"
