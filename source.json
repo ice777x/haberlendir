@@ -1,0 +1,260 @@
+[
+  {
+    "name": "Haber7",
+    "url": ["https://www.haber7.com/"],
+    "image": "https://i11.haber7.net//logo.jpg",
+    "rss": "http://sondakika.haber7.com/sondakika.rss"
+  },
+  {
+    "name": "GazeteVatan",
+    "url": ["https://www.gazetevatan.com/"],
+    "image": null,
+    "rss": "https://www.gazetevatan.com/rss/gundem.xml"
+  },
+  {
+    "name": "VeryansınTV",
+    "url": [
+      "https://www.veryansintv.com/feed/",
+      "https://www.veryansintv.com/"
+    ],
+    "image": "https://cdn.veryansintv.com/2022/03/veryansintv-kunye-150x150.png",
+    "rss": "https://www.veryansintv.com/feed/"
+  },
+  {
+    "name": "Milliyet",
+    "url": ["https://www.milliyet.com.tr/"],
+    "image": "https://image.milimaj.com/i/milliyet/75/460x340/5bf570e4cb145112d088da10",
+    "rss": "http://www.milliyet.com.tr/rss/rssNew/SonDakikaRss.xml"
+  },
+  {
+    "name": "STAR.COM.TR",
+    "url": ["https://www.star.com.tr/"],
+    "image": "https://m.star.com.tr/assets/img/star-apple-touch-icon.png",
+    "rss": "http://www.star.com.tr/rss/rss.asp"
+  },
+  {
+    "name": "CNN TÜRK",
+    "url": ["https://www.cnnturk.com/"],
+    "image": "https://v6s.cnnturk.com/images/cnnturk-logo.png",
+    "rss": "https://www.cnnturk.com/feed/rss/all/news"
+  },
+  {
+    "name": "TRT Haber",
+    "url": [
+      "https://www.trthaber.com/",
+      "https://www.trthaber.com/sondakika.rss"
+    ],
+    "image": "https://trthaberstatic.cdn.wp.trt.com.tr/static/images/logo.jpg",
+    "rss": "http://www.trthaber.com/sondakika.rss"
+  },
+  {
+    "name": "AÇIK GAZETE",
+    "url": ["https://acikgazete.com/feed/", "https://acikgazete.com/"],
+    "image": "https://acikgazete.com/wp-content/uploads/2016/05/logo-32x32.gif",
+    "rss": "http://www.acikgazete.com/feed/"
+  },
+  {
+    "name": "AyGazete",
+    "url": ["http://www.aygazete.com/"],
+    "image": "http://www.aygazete.com/images/logo.png",
+    "rss": "http://www.aygazete.com/rss/gundem-haberleri"
+  },
+  {
+    "name": "BBC Turkish",
+    "url": [
+      "https://www.bbc.co.uk/turkce",
+      "https://feeds.bbci.co.uk/turkce/rss.xml"
+    ],
+    "image": "http://www.bbc.co.uk/turkce/images/gel/rss_logo.gif",
+    "rss": "http://feeds.bbci.co.uk/turkce/rss.xml"
+  },
+  {
+    "name": "Ensonhaber",
+    "url": ["https://www.ensonhaber.com/"],
+    "image": "https://icdn.ensonhaber.com/resimler/rss_logo.png",
+    "rss": "http://www.ensonhaber.com/rss/ensonhaber.xml"
+  },
+  {
+    "name": "Türkiye Haber Ajansı - Çağdaş Türkiye'nin Habercisi",
+    "url": ["https://www.turkiyehaberajansi.com/"],
+    "image": null,
+    "rss": "http://www.turkiyehaberajansi.com/rss.xml"
+  },
+  {
+    "name": "İnternethaber",
+    "url": ["https://www.internethaber.com/"],
+    "image": "https://i.internethaber.com/assets/web/images/menu-logo.png",
+    "rss": "http://www.internethaber.com/rss"
+  },
+  {
+    "name": "Cumhuriyet Gazetesi",
+    "url": ["https://www.cumhuriyet.com.tr/"],
+    "image": "https://www.cumhuriyet.com.tr/image/template/Cumhuriyet_logo_300x60px.png",
+    "rss": "http://www.cumhuriyet.com.tr/rss/son_dakika.xml"
+  },
+  {
+    "name": "Dünya Gazetesi",
+    "url": ["https://www.dunya.com/"],
+    "image": "https://s.dunya.com/assets/web/images/header-logo_red@2x.png",
+    "rss": "https://www.dunya.com/rss?dunya"
+  },
+  {
+    "name": "T24 - Haberler",
+    "url": ["https://t24.com.tr/", "https://t24.com.tr/rss"],
+    "image": "https://t24.com.tr/logo.png",
+    "rss": "https://t24.com.tr/rss"
+  },
+  {
+    "name": "Haber Global",
+    "url": ["https://haberglobal.com.tr/", "https://haberglobal.com.tr/rss"],
+    "image": "https://s.haberglobal.com.tr/frontend/assets/v2/images/logo.png",
+    "rss": "https://haberglobal.com.tr/rss"
+  },
+  {
+    "name": "CNN TÜRK",
+    "url": ["https://www.cnnturk.com/"],
+    "image": "https://v6s.cnnturk.com/images/cnnturk-logo.png",
+    "rss": "https://www.cnnturk.com/feed/rss/all/news"
+  },
+  {
+    "name": "Giresun Haber | Karadeniz Haber | Yıldız Haber",
+    "url": [
+      "https://www.yildizhaber.com.tr/rss.xml",
+      "https://www.yildizhaber.com.tr/rss.xml"
+    ],
+    "image": null,
+    "rss": "https://www.yildizhaber.com.tr/rss.xml"
+  },
+  {
+    "name": "Redaktör Haber",
+    "url": ["https://www.redaktorhaber.com/"],
+    "image": null,
+    "rss": "https://www.redaktorhaber.com/rss/genel-0"
+  },
+  {
+    "name": "Haber Hürriyeti - İzmir Son Dakika Haberleri - Haber Hürriyeti",
+    "url": [
+      "https://www.haberhurriyeti.com/rss",
+      "https://www.haberhurriyeti.com/rss"
+    ],
+    "image": null,
+    "rss": "https://www.haberhurriyeti.com/rss.xml"
+  },
+  {
+    "name": "CNN - RSS Channel - App International Edition",
+    "url": ["https://www.cnn.com/app-international-edition/index.html"],
+    "image": "http://i2.cdn.turner.com/cnn/2015/images/09/24/cnn.digital.png",
+    "rss": "http://rss.cnn.com/rss/edition.rss"
+  },
+  {
+    "name": "Gazete Duvar",
+    "url": ["https://www.gazeteduvar.com.tr/"],
+    "image": "https://s.gazeteduvar.com.tr/assets/web/images/logo@2x.png?v1",
+    "rss": "https://www.gazeteduvar.com.tr/export/rss"
+  },
+  {
+    "name": "Euronews",
+    "url": [
+      "https://tr.euronews.com/",
+      "https://tr.euronews.com/rss?format=mrss&level=theme&name=news"
+    ],
+    "image": "https://static.euronews.com/website/images/euronews_flatblue.png",
+    "rss": "https://tr.euronews.com/rss"
+  },
+  {
+    "name": "The European Times",
+    "url": ["https://europeantimes.news/feed/", "https://europeantimes.news/"],
+    "image": "https://europeantimes.news/wp-content/uploads/2023/08/European-Times-3000x3000-1.png",
+    "rss": "https://europeantimes.news/feed/"
+  },
+  {
+    "name": "Haberler",
+    "url": ["https://www.haberler.com/", "https://rss.haberler.com/rss.asp"],
+    "image": "https://foto.haberler.com/genel/haberler-com-amp-logo.jpg",
+    "rss": "https://rss.haberler.com/rss.asp"
+  },
+  {
+    "name": "STAR",
+    "url": ["https://www.star.com.tr/"],
+    "image": "https://m.star.com.tr/assets/img/star-apple-touch-icon.png",
+    "rss": "https://www.star.com.tr/rss/rss.asp"
+  },
+  {
+    "name": "Sozcu Gazetesi",
+    "url": [
+      "https://www.sozcu.com.tr/feeds-son-dakika",
+      "https://www.sozcu.com.tr/feeds-son-dakika"
+    ],
+    "image": "https://sozcu01.sozcucdn.com/sozcu/production/uploads/images/2023/11/syanasayfajpg-fRCS_7yW7kGj-hlTC79fcQ.jpg",
+    "rss": "https://www.sozcu.com.tr/feeds-son-dakika"
+  },
+  {
+    "name": "Cumhuriyet Gazetesi",
+    "url": ["https://www.cumhuriyet.com.tr/"],
+    "image": "https://www.cumhuriyet.com.tr/image/template/Cumhuriyet_logo_300x60px.png",
+    "rss": "https://www.cumhuriyet.com.tr/rss/son_dakika.xml"
+  },
+  {
+    "name": "Türkiye Gazetesi",
+    "url": [
+      "https://www.turkiyegazetesi.com.tr/",
+      "https://www.turkiyegazetesi.com.tr/rss"
+    ],
+    "image": "https://i.turkiyegazetesi.com.tr/assets/images/logo.png",
+    "rss": "https://www.turkiyegazetesi.com.tr/rss/rss.xml"
+  },
+  {
+    "name": "HABERTURK",
+    "url": ["https://www.haberturk.com"],
+    "image": "https://www.haberturk.com/images/htklogo2.jpg",
+    "rss": "https://www.haberturk.com/haberturk.xml"
+  },
+  {
+    "name": "Telegraph",
+    "url": [
+      "http://www.telegraph.co.uk/",
+      "http://www.telegraph.co.uk/rss.xml"
+    ],
+    "image": "http://www.telegraph.co.uk/etc/designs/telegraph/core/clientlibs/themes/cars/img/favicon/apple-touch-icon-114x114.png",
+    "rss": "https://www.telegraph.co.uk/rss.xml"
+  },
+  {
+    "name": "NYT > World News",
+    "url": [
+      "https://www.nytimes.com/section/world",
+      "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+    ],
+    "image": "https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png",
+    "rss": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+  },
+  {
+    "name": "The Guardian | Middle East",
+    "url": ["https://www.theguardian.com/world/middleeast"],
+    "image": "https://assets.guim.co.uk/images/guardian-logo-rss.c45beb1bafa34b347ac333af2e6fe23f.png",
+    "rss": "https://www.theguardian.com/world/middleeast/rss"
+  },
+  {
+    "name": "The Guardian | US News",
+    "url": ["https://www.theguardian.com/us-news"],
+    "image": "https://assets.guim.co.uk/images/guardian-logo-rss.c45beb1bafa34b347ac333af2e6fe23f.png",
+    "rss": "https://www.theguardian.com/us-news/rss"
+  },
+  {
+    "name": "The Guardian | Europe",
+    "url": ["https://www.theguardian.com/europe"],
+    "image": "https://assets.guim.co.uk/images/guardian-logo-rss.c45beb1bafa34b347ac333af2e6fe23f.png",
+    "rss": "https://www.theguardian.com/europe/rss"
+  },
+  {
+    "name": "The Guardian",
+    "url": ["https://www.theguardian.com/uk"],
+    "image": "https://assets.guim.co.uk/images/guardian-logo-rss.c45beb1bafa34b347ac333af2e6fe23f.png",
+    "rss": "https://www.theguardian.com/uk/rss"
+  },
+  {
+    "name": "Washington Post",
+    "url": ["https://www.washingtonpost.com"],
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/The_Logo_of_The_Washington_Post_Newspaper.svg/926px-The_Logo_of_The_Washington_Post_Newspaper.svg.png",
+    "rss": "https://www.washingtonpost.com/arcio/rss/"
+  }
+]

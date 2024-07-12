@@ -1,13 +1,14 @@
 pub mod feed;
+
 pub use crate::feed::Feed;
 
 use chrono::Utc;
+use feed::Source;
 use feed_rs::parser::parse;
 use html_escape::decode_html_entities;
 use lazy_static::lazy_static;
 use log::warn;
 use regex::Regex;
-use serde::{Deserialize, Serialize};
 use tokio::fs;
 
 lazy_static! {
@@ -24,46 +25,41 @@ fn clean_html(input: &str) -> String {
     cleaned.trim().to_string()
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Author {
-    name: String,
-    url: Vec<String>,
-    image: Option<String>,
+async fn source_from_json(path: &str) -> Vec<Source> {
+    let read_file = fs::read_to_string(path)
+        .await
+        .expect(format!("Can't read data from {path}").as_str());
+    let data =
+        serde_json::from_str::<Vec<Source>>(&read_file).expect("JSON was not well-formatted");
+    data
 }
 
 pub struct Parser {
-    pub urls: Vec<String>,
+    pub source: Vec<Source>,
 }
 
 impl Parser {
     pub async fn build(path: &str) -> Parser {
-        let urls = Parser::news_from_file(path).await;
-        Parser { urls }
-    }
-
-    async fn news_from_file(path: &str) -> Vec<String> {
-        let read_dir = fs::read_to_string(path).await;
-        match read_dir {
-            Ok(text) => text.lines().map(|f| f.to_string()).collect(),
-            Err(e) => {
-                println!("{}", e.kind());
-                Vec::new()
-            }
-        }
+        let source = source_from_json(path).await;
+        Parser { source }
     }
 
     /// Returns the get all rss of this [`Parser`].
     pub async fn get_all_rss(&self) -> Vec<Feed> {
         let mut rss = Vec::new();
-        for i in self.urls.iter() {
-            if let Ok(news) = self.get_rss(i).await {
+        for i in self.source.iter() {
+            if let Ok(news) = self.get_rss(&i.rss, i).await {
                 rss.extend(news);
             }
         }
         rss
     }
 
-    pub async fn get_rss(&self, url: &str) -> Result<Vec<Feed>, Box<dyn std::error::Error>> {
+    pub async fn get_rss(
+        &self,
+        url: &str,
+        src: &Source,
+    ) -> Result<Vec<Feed>, Box<dyn std::error::Error>> {
         let res = reqwest::get(url).await?.bytes().await?;
         let rss = parse(&res[..])?;
         let mut items = Vec::new();
@@ -86,10 +82,24 @@ impl Parser {
                 continue;
             }
 
+            if entry.links.first().is_none() {
+                continue;
+            }
+            let categories = entry
+                .categories
+                .into_iter()
+                .map(|cat| cat.term)
+                .collect::<Vec<String>>();
+            let author = entry
+                .authors
+                .into_iter()
+                .map(|aut| aut.name)
+                .collect::<Vec<String>>();
             let feed = Feed {
                 id: entry.id,
                 title: entry.title.ok_or(String::new()).unwrap().content,
-                author: source.to_owned(),
+                author,
+                source: src.clone(),
                 link: match entry.links.first() {
                     Some(link) => link.href.clone(),
                     None => String::new(),
@@ -99,6 +109,7 @@ impl Parser {
                 } else {
                     None
                 },
+                categories,
                 content: entry
                     .content
                     .map(|content| self.content(&content.body.unwrap_or_default())),

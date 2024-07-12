@@ -9,7 +9,7 @@ pub mod middleware;
 pub mod router;
 
 pub async fn create(db: Arc<DB>) {
-    let parser = Parser::build("source.txt").await;
+    let parser = Parser::build("source.json").await;
     let items = parser.get_all_rss().await;
     db.insert_many(items).await;
 }

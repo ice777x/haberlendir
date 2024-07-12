@@ -29,16 +29,26 @@ impl DB {
         &self,
         regex: Option<&String>,
         limit: Option<i64>,
+        author: Option<bool>,
         skip: Option<u64>,
     ) -> Vec<Feed> {
         let filter = match regex {
             Some(re) => {
-                doc! { "$or"	: [
-                doc!{"title": doc!{"$regex": re, "$options": "i"}},
-                doc!{ "content": doc!{"$regex": re, "$options": "i"}},
-                doc!{ "description": doc!{"$regex": re, "$options": "i"}}
-                    ]
+                let mut queries = Vec::new();
+                if author.is_none() {
+                    queries.push(doc! {"title": doc!{"$regex": re, "$options": "i"}});
+                    queries.push(doc! { "content": doc!{"$regex": re, "$options": "i"}});
+                    queries.push(doc! { "description": doc!{"$regex": re, "$options": "i"}});
+                } else {
+                    if author.unwrap() == true {
+                        queries.push(doc! {"author": doc!{"$regex": re, "$options": "i"}});
+                    } else {
+                        queries.push(doc! {"title": doc!{"$regex": re, "$options": "i"}});
+                        queries.push(doc! { "content": doc!{"$regex": re, "$options": "i"}});
+                        queries.push(doc! { "description": doc!{"$regex": re, "$options": "i"}});
+                    }
                 }
+                doc! { "$or"	:queries}
             }
             None => {
                 doc! {}
@@ -92,7 +102,10 @@ impl DB {
         result.map(|_| true).unwrap()
     }
 
-    pub async fn delete_many(&self, docs: &[String], all: bool) {
+    pub async fn delete_many(&self, docs: Option<&[String]>, all: bool) {
+        if docs.is_none() && !all {
+            return ();
+        }
         // let ids: Vec<&str> = docs.iter().map(|doc| doc.id.as_str()).collect();
         let filter = if all {
             doc! {}
